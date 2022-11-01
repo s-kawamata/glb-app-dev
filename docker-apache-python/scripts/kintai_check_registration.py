@@ -1,6 +1,6 @@
 from selenium import webdriver
 #import chromedriver_binary
-#from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
@@ -20,7 +20,7 @@ last_month = now - relativedelta(months=1)
 last_month_str = last_month.strftime('%Y年%m月')
 
 
-CHROMEDRIVER = "/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
+CHROMEDRIVER = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 # ドライバー指定でChromeブラウザを開く
 driver = webdriver.Chrome(ChromeDriverManager().install())
 # driver = webdriver.Remote(

@@ -5,9 +5,8 @@ from selenium.webdriver.common.action_chains import ActionChains
 import time
 from selenium.webdriver.support.ui import Select
 
-CHROMEDRIVER = "C:\chromedriver.exe"
 # ドライバー指定でChromeブラウザを開く
-driver = webdriver.Chrome(CHROMEDRIVER)
+driver = webdriver.Chrome(executable_path='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome') 
 #driver = webdriver.Firefox()
  
 # Googleアクセス

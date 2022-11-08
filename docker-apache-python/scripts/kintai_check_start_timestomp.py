@@ -8,7 +8,7 @@ import time
 from selenium.webdriver.support.ui import Select
 from datetime import datetime, date, timedelta
 from dateutil.relativedelta import relativedelta
-import list
+import user_list
 import sys
 sys.path.append("/Users/akatsukatakukai/Documents/working/kinmu_Bot")
 
@@ -46,7 +46,7 @@ driver.implicitly_wait(10)
 
 
 #メンバリスト分繰り返し処理を開始
-for i in list.nameList:
+for i in user_list.nameList:
 
     #社員名横のプルダウンをクリック
     driver.find_element_by_xpath('//*[@id="empListButton"]').click()

@@ -1,0 +1,49 @@
+[33mcommit 899514051659b4d2d2e016a83412138457cb1fd9[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: Kazuaki Fujihira <K_fujihira@ap-com.co.jp>
+Date:   Fri Nov 18 17:55:46 2022 +0900
+
+    20221118_commit
+
+[33mcommit da375ba136ec62bd0d8c658ccb11aad94c332961[m
+Author: Kazuaki Fujihira <K_fujihira@ap-com.co.jp>
+Date:   Fri Nov 18 17:35:00 2022 +0900
+
+    Revert "20221118_commit"
+    
+    This reverts commit 2ca257d3119100f1017a13e14325683c6b36313c.
+
+[33mcommit 2ca257d3119100f1017a13e14325683c6b36313c[m
+Author: Kazuaki Fujihira <K_fujihira@ap-com.co.jp>
+Date:   Fri Nov 18 17:30:31 2022 +0900
+
+    20221118_commit
+
+[33mcommit 6eec3d361c9d38f1128f701f4bcb4e6511a07f43[m
+Author: takumi100 <102357259+takumi100@users.noreply.github.com>
+Date:   Tue Nov 8 14:13:49 2022 +0900
+
+    Modify kintai_check_start_timestomp.py
+
+[33mcommit f0cea9d990810a7fb0e43afa7cf089c7b1bfab68[m
+Author: Takumi Akatsuka <akatsuka@ap-com.co.jp>
+Date:   Tue Nov 8 13:52:39 2022 +0900
+
+    add file kintai_check_start_timestomp.py
+
+[33mcommit 60616ea90c9a576f0860236ca06c36b3f75a3ad3[m
+Author: 川俣 州生 <s_kawamata@IT-PC-2001-0418.local>
+Date:   Tue Nov 8 13:13:05 2022 +0900
+
+    modify kintai_check_over_45_hours.py
+
+[33mcommit fd6e34cd4ee9abb73ec2a32332eadcb9251d0e27[m
+Author: 川俣 州生 <s_kawamata@IT-PC-2001-0418.local>
+Date:   Tue Nov 1 15:10:47 2022 +0900
+
+    change file name
+
+[33mcommit b7b6930a403f43e1e0c76b8b3a524b84e5db88a4[m
+Author: 川俣 州生 <s_kawamata@IT-PC-2001-0418.local>
+Date:   Sun Oct 30 11:45:28 2022 +0900
+
+    first commit

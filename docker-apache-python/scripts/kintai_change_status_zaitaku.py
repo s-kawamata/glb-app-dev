@@ -4,34 +4,34 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 import time
 from selenium.webdriver.support.ui import Select
+import user_info
 
-# ドライバー指定でChromeブラウザを開く
-driver = webdriver.Chrome(executable_path='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome') 
+
+CHROMEDRIVER = "C:\chromedriver.exe"
+# Chromeを起動
+driver = webdriver.Chrome(CHROMEDRIVER)
 #driver = webdriver.Firefox()
  
-# Googleアクセス
+# Googleにアクセス
 driver.get('https://login.salesforce.com/?locale=jp')
 
-#driver.maximize_window()
-driver.set_window_size(1200,3000)
+#ウインドウサイズを変更
+driver.set_window_size(1920,1080)
 
-driver.find_element_by_xpath('//*[@id="username"]').send_keys("k_fujihira@ap-com.co.jp")
-driver.find_element_by_xpath('//*[@id="password"]').send_keys("613457Frontier")
+#ログイン画面にてクレデンシャルを入力
+driver.find_element_by_xpath('//*[@id="username"]').send_keys(user_info.salesforce_id)
+driver.find_element_by_xpath('//*[@id="password"]').send_keys(user_info.salesforce_passwd)
 
 #ログインボタンをクリック
 driver.find_element_by_xpath('//*[@id="Login"]').click()
 
 #勤務表のタブをクリック
 driver.find_element_by_xpath('//*[@id="01r5F000000g5DS_Tab"]/a').click()
-time.sleep(5)
-#driver.find_element_by_xpath('//*[@id="nextMonthButton"]').click()
 #time.sleep(5)
-#driver.find_element_by_xpath('//*[@id="nextMonthButton"]').click()
-#time.sleep(5)
+driver.implicitly_wait(5)
 
 #繰り返し処理を開始
-i=0
-
+i=12
 content = driver.find_elements_by_css_selector('.tele')
 days = len(content)
 print(days)
@@ -39,42 +39,32 @@ print(days)
 while i < days:
     print("処理スタート")
     print(i)
-    elements = driver.find_elements_by_css_selector('.tele')[i]
-    loc = elements.location
-    x, y = loc['x'], loc['y']
-    actions = ActionChains(driver)
-    actions.move_by_offset(x,y)
-    actions.click()
-    actions.perform()
 
-    #処理を待つ
-    time.sleep(4)
+    #日付の欄まで縦スクロール、クリック
+    elements = driver.find_elements_by_css_selector('.tele')[i]
+    driver.execute_script("window.scrollTo(0, " + str(elements.location['y']) + ");")
+    elements.click()
+    time.sleep(5)
 
     print("日時が選択されました") 
 
-    #勤務場所のタブを選択する
-    element = driver.find_element_by_xpath('//*[@id="workLocationId"]')
-    driver.implicitly_wait(5)
+    #「勤務場所」入力欄まで移動
+    kinmu_place = driver.find_element_by_xpath('//*[@id="workLocationId"]')
+    print (kinmu_place)
+    driver.execute_script("window.scrollTo(0, " + str(kinmu_place.location['y']) + ");")
 
-    #タブを選択する為の処理
-    select = Select(element)
-    driver.implicitly_wait(5)
-
-    #value属性から「在宅勤務」を選択する 
-    select.select_by_value('a2B5F00000OkMUPUA3')  #←文字の方がいい
+    #「勤務場所」から「在宅勤務」を選択する 
+    select = Select(kinmu_place)
+    select.select_by_value('a2B5F00000OkMUPUA3')#←文字の方がいい
     #select.select_by_value('')  #←空白
-    driver.implicitly_wait(5)
 
     #登録ボタンクリック
     driver.find_element_by_xpath('//*[@id="dlgInpTimeOk"]').click()
-    driver.implicitly_wait(5)
     i+=1
     print("登録ボタンが押されました")
 
-    #アクションをリセット
-    actions.reset_actions()
-    #処理待ち
-    time.sleep(6)
+    time.sleep(5)
+
 else:
 # 処理対象が存在しない時の処理
     driver.quit()

@@ -1,91 +1,108 @@
+import user_info
 from selenium import webdriver
-import chromedriver_binary
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 import time
 from selenium.webdriver.support.ui import Select
-from datetime import datetime, date, timedelta
-from dateutil.relativedelta import relativedelta
-import user_list
-import sys
-sys.path.append("/Users/akatsukatakukai/Documents/working/kinmu_Bot")
+import datetime
 
-#今日の日付を取得し、要素検索用に加工
 
-today = date.today()
-print(today)
-startTimeElement = "ttvTimeSt" + str(today)
-print(startTimeElement)
+#TOKEN = 'xoxb-296963997159-3976993749254-8ungRxwqElywnPtZJz3QJ4Xn'
+#CHANNEL = 'fujihira_test'
+
+#url = "https://slack.com/api/chat.postMessage"
+#headers = {"Authorization": "Bearer "+TOKEN}
+#data  = {
+#   'channel': CHANNEL,
+#   'text': 'リモワ開始します'
+#}
+#r = requests.post(url, headers=headers, data=data)
+#print("return ", r.json())
 
 
 CHROMEDRIVER = "C:\chromedriver.exe"
 # ドライバー指定でChromeブラウザを開く
-driver = webdriver.Chrome(ChromeDriverManager().install())
+driver = webdriver.Chrome(CHROMEDRIVER)
 
+#ウインドウサイズを変更
+driver.set_window_size(1920,1080)
+ 
 # Googleアクセス
 driver.get('https://login.salesforce.com/?locale=jp')
-
-time.sleep(2)
-
-driver.find_element_by_xpath('//*[@id="username"]').send_keys("xxxxx")
-driver.find_element_by_xpath('//*[@id="password"]').send_keys("xxxxx")
-
-time.sleep(2)
+ 
+#ログイン画面にてクレデンシャルを入力
+driver.find_element_by_xpath('//*[@id="username"]').send_keys(user_info.salesforce_id)
+driver.find_element_by_xpath('//*[@id="password"]').send_keys(user_info.salesforce_passwd)
 
 #ログインボタンをクリック
 driver.find_element_by_xpath('//*[@id="Login"]').click()
+print ("ログイン完了")
+time.sleep(5)
 
-time.sleep(2)
+#出勤ボタンをを押下
 
-#勤務表のタブをクリック
-driver.find_element_by_xpath('//*[@id="01r5F000000g5DS_Tab"]/a').click()
+#button = driver.find_element_by_xpath('//*[@id="btnStInput"]')
+#button = driver.find_element_by_xpath("//input[contain text(),'勤怠打刻']")
+#driver.execute_script("window.scrollTo(0, " + str(button.location['y']) + ");")
+#button.click()
+#driver.find_element_by_xpath('//*[@id="btnStInput"]').click()
+#driver.find_element_by_xpath('//*[@id="btnEtInput"]').click()
+time.sleep(5)
 
-driver.implicitly_wait(10)
+#経費申請画面に遷移
+elements = driver.find_element_by_xpath('//*[@id="01r5F000000g5DF_Tab"]/a')
+loc = elements.location
+x, y = loc['x'], loc['y']
+actions = ActionChains(driver)
+actions.move_by_offset(x,y)
+actions.click()
+actions.perform()
+time.sleep(5)
 
+#+ボタンを押下
+driver.find_element_by_xpath('//*[@id="expApplyForm0"]/div[6]/table/tfoot/tr[4]/td/table/tr/td[1]/div/button').click()
+time.sleep(10)
 
-#メンバリスト分繰り返し処理を開始
-for i in user_list.nameList:
+#利用日を入力
+today = datetime.date.today()
+year = today.year
+month = today.month
+day = today.day
+driver.find_element_by_xpath('//*[@id="DlgDetailDate"]').clear()
+time.sleep(5)
+driver.find_element_by_xpath('//*[@id="DlgDetailDate"]').send_keys(year, "/", month, "/", day)
+time.sleep(5)
 
-    #社員名横のプルダウンをクリック
-    driver.find_element_by_xpath('//*[@id="empListButton"]').click()
+#費目を選択
+element = driver.find_element_by_xpath('//*[@id="DlgDetailExpItem"]')
+time.sleep(5)
+#タブを選択する為の処理
+select = Select(element)
+driver.implicitly_wait(5)
+select.select_by_value('a1M5F00000S8BBiUAN')#交通費を選択
+time.sleep(5)
 
-    time.sleep(3)
+driver.find_element_by_xpath('//*[@id="DlgExpDetailStFrom"]').send_keys("都賀")#出発駅を入力
+driver.find_element_by_xpath('//*[@id="DlgExpDetailStTo"]').send_keys("田町")#到着駅を入力
+time.sleep(5)
 
+#虫眼鏡をクリック
+driver.find_element_by_xpath('//*[@id="dijit_Dialog_1"]/div[2]/div/div[2]/div[3]/div[2]/div/input[2]').click()
+driver.find_element_by_xpath('//*[@id="expSearchOk"]').click()
+driver.find_element_by_xpath('//*[@id="expSearchOk"]/div').click()
+time.sleep(5)
 
+#往復ボタンを押下
+driver.find_element_by_xpath('//*[@id="dijit_Dialog_1"]/div[2]/div/div[2]/div[3]/div[2]/div/input[1]').click()
+time.sleep(5)
 
-    #別ウインドウをアクティブに
-    newhandles = driver.window_handles
-    driver.switch_to.window(newhandles [1])
+#OKを押下
+driver.find_element_by_xpath('//*[@id="dijit_Dialog_1"]/div[2]/div/div[3]/div[2]/button[1]/div').click()
+time.sleep(5)
 
-    time.sleep(3)
+#保存を押下
+driver.find_element_by_xpath('//*[@id="tsfArea"]/div[4]/div[2]/table/tbody/tr/td[8]/button').click()
+time.sleep(5)
 
-
-    #メンバ名を検索、クリック
-    driver.find_element_by_link_text(i).click()
-
-
-    #元のウインドウに戻る
-    driver.switch_to.window(newhandles [0])
-
-    time.sleep(3)
-
-
-
-    #勤務開始の要素を確認し、未入力であればフラグを立てる
-    
-    status = driver.find_element_by_id(startTimeElement).get_attribute("textContent")
-
-    if status == '':
-        print(i + 'さんはまだ本日の勤怠開始を打刻していません')
-    else :
-        print(i + 'さんはすでに本日の勤怠開始を打刻しています')
-    
-
-#完了処理
 driver.quit()
-
-
-
-

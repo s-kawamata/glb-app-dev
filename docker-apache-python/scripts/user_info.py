@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #salesforce_id = "s_kawamata@ap-com.co.jp"
 #salesforce_passwd = "19921107Wanko"
 
@@ -12,3 +13,15 @@ salesforce_passwd = "613457Frontier"
 departure_station = "都賀" #「~"駅"」は含めなくても大丈夫です
 destination_station = "田町" #「~"駅"」は含めなくても大丈夫です
 syusya_time = "時" #出社時刻を入力してください
+=======
+salesforce_id = "s_kawamata@ap-com.co.jp"
+salesforce_passwd = "19921107Wanko"
+
+#ログイン情報
+#salesforce_id = "k_fujihira@ap-com.co.jp"
+#salesforce_passwd = "613457Frontier"
+
+#勤怠情報
+#departure_station = "都賀" #「~"駅"」は含めなくても大丈夫です
+#destination_station = "田町" #「~"駅"」は含めなくても大丈夫です
+>>>>>>> a0bc3f96155662cb5ac83a867f46f1a31de46143

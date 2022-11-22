@@ -31,7 +31,11 @@ driver.find_element_by_xpath('//*[@id="01r5F000000g5DS_Tab"]/a').click()
 driver.implicitly_wait(5)
 
 #繰り返し処理を開始
+<<<<<<< HEAD
 i=0
+=======
+i=
+>>>>>>> a0bc3f96155662cb5ac83a867f46f1a31de46143
 content = driver.find_elements_by_css_selector('.tele')
 days = len(content)
 print(days)

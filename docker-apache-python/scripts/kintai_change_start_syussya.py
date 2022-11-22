@@ -6,19 +6,20 @@ from selenium.webdriver.common.action_chains import ActionChains
 import time
 from selenium.webdriver.support.ui import Select
 import datetime
+import requests
 
 
-#TOKEN = 'xoxb-296963997159-3976993749254-8ungRxwqElywnPtZJz3QJ4Xn'
-#CHANNEL = 'fujihira_test'
+TOKEN = user_info.slack_token
+CHANNEL = 'fujihira_test'
 
-#url = "https://slack.com/api/chat.postMessage"
-#headers = {"Authorization": "Bearer "+TOKEN}
-#data  = {
-#   'channel': CHANNEL,
-#   'text': 'リモワ開始します'
-#}
-#r = requests.post(url, headers=headers, data=data)
-#print("return ", r.json())
+url = "https://slack.com/api/chat.postMessage"
+headers = {"Authorization": "Bearer "+TOKEN}
+data  = {
+  'channel': CHANNEL,
+  'text': ''+ user_info.destination_station +'にて勤務開始します'
+}
+r = requests.post(url, headers=headers, data=data)
+print("return ", r.json())
 
 
 CHROMEDRIVER = "C:\chromedriver.exe"
@@ -39,6 +40,9 @@ driver.find_element_by_xpath('//*[@id="password"]').send_keys(user_info.salesfor
 driver.find_element_by_xpath('//*[@id="Login"]').click()
 print ("ログイン完了")
 time.sleep(5)
+
+#driver.find_element_by_xpath('//*[@id="btnStInput"]').click()
+driver.find_element_by_xpath('//*[@id="btnEtInput"]').click()
 
 #出勤ボタンをを押下
 
@@ -83,8 +87,8 @@ driver.implicitly_wait(5)
 select.select_by_value('a1M5F00000S8BBiUAN')#交通費を選択
 time.sleep(5)
 
-driver.find_element_by_xpath('//*[@id="DlgExpDetailStFrom"]').send_keys("都賀")#出発駅を入力
-driver.find_element_by_xpath('//*[@id="DlgExpDetailStTo"]').send_keys("田町")#到着駅を入力
+driver.find_element_by_xpath('//*[@id="DlgExpDetailStFrom"]').send_keys("user_info.departure_station")#出発駅を入力
+driver.find_element_by_xpath('//*[@id="DlgExpDetailStTo"]').send_keys("user_info.destination_station")#到着駅を入力
 time.sleep(5)
 
 #虫眼鏡をクリック

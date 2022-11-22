@@ -8,17 +8,18 @@ from selenium.webdriver.support.ui import Select
 import datetime
 
 
-#TOKEN = 'xoxb-296963997159-3976993749254-8ungRxwqElywnPtZJz3QJ4Xn'
-#CHANNEL = 'fujihira_test'
+TOKEN = user_info.slack_token
+CHANNEL = 'fujihira_test'
 
-#url = "https://slack.com/api/chat.postMessage"
-#headers = {"Authorization": "Bearer "+TOKEN}
-#data  = {
-#   'channel': CHANNEL,
-#   'text': 'リモワ開始します'
-#}
-#r = requests.post(url, headers=headers, data=data)
-#print("return ", r.json())
+url = "https://slack.com/api/chat.postMessage"
+headers = {"Authorization": "Bearer "+TOKEN}
+data  = {
+  'channel': CHANNEL,
+  'text': ''+ user_info.destination_station +'退館します'
+}
+r = requests.post(url, headers=headers, data=data)
+print("return ", r.json())
+
 
 
 CHROMEDRIVER = "C:\chromedriver.exe"

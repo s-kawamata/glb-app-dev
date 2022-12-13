@@ -14,6 +14,7 @@
     }
     echo $result;
     echo exec(array($cmd));
+    #test
 ?>
 <!DOCTYPE html>
 <html lang="ja">

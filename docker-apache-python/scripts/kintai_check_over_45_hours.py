@@ -4,15 +4,21 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 import time
 from selenium.webdriver.support.ui import Select
-from webdriver_manager.chrome import ChromeDriverManager
+#from webdriver_manager.chrome import ChromeDriverManager
 import user_info
 import user_list
+from selenium.webdriver import DesiredCapabilities
 
 
 # ドライバー指定でChromeブラウザを開く
-CHROMEDRIVER = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-driver = webdriver.Chrome(ChromeDriverManager().install())
- 
+#CHROMEDRIVER = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+#driver = webdriver.Chrome(ChromeDriverManager().install())
+
+driver = webdriver.Remote(
+     command_executor="http://selenium:4444/wd/hub",
+     desired_capabilities=DesiredCapabilities.CHROME.copy(),
+ )
+
 # Googleアクセス
 driver.get('https://login.salesforce.com/?locale=jp')
 
@@ -44,10 +50,11 @@ for user in user_list.nameList:
 
     #時間外超過時間を摘出
     value = driver.find_element_by_xpath("//*[contains(text(), '当月度の超過時間＋法定休日労働時間')]/../../td[2]").text
+    time.sleep(2)
     #:より前を切り出す
     target = ':'
     idx = value.find(target)
-    exceed_time = int(value[:idx]) 
+    exceed_time = int(value[:idx])
 
 
     if exceed_time < 25:
@@ -66,3 +73,5 @@ for user in user_list.nameList:
         print(user + "さんの現在の超過時間:" + str(exceed_time) )
         print("45時間を超えています!")
 
+#完了処理
+driver.quit()

@@ -7,7 +7,7 @@ import time
 from selenium.webdriver.support.ui import Select
 import datetime
 import requests
-
+from config import *
 
 TOKEN = user_info.slack_token
 CHANNEL = 'fujihira_test'
@@ -39,19 +39,30 @@ driver.find_element_by_xpath('//*[@id="password"]').send_keys(user_info.salesfor
 #ログインボタンをクリック
 driver.find_element_by_xpath('//*[@id="Login"]').click()
 print ("ログイン完了")
+time.sleep(7)
+
+#「出社」に勤務形態を登録
+elements = driver.find_element_by_xpath('//*[@id="0665F00000117vk"]')
+print(elements)
+loc = elements.location
+x, y = loc['x'], loc['y']
+actions = ActionChains(driver)
+actions.move_by_offset(x+170,y+65)
+actions.click()
+actions.click()
+actions.perform()
 time.sleep(5)
+actions.reset_actions()
 
-#driver.find_element_by_xpath('//*[@id="btnStInput"]').click()
-driver.find_element_by_xpath('//*[@id="btnEtInput"]').click()
-
-#出勤ボタンをを押下
-
-#button = driver.find_element_by_xpath('//*[@id="btnStInput"]')
-#button = driver.find_element_by_xpath("//input[contain text(),'勤怠打刻']")
-#driver.execute_script("window.scrollTo(0, " + str(button.location['y']) + ");")
-#button.click()
-#driver.find_element_by_xpath('//*[@id="btnStInput"]').click()
-#driver.find_element_by_xpath('//*[@id="btnEtInput"]').click()
+#出勤ボタンを押下
+elements = driver.find_element_by_xpath('//*[@id="0665F00000117vk"]')
+loc = elements.location
+x, y = loc['x'], loc['y']
+actions = ActionChains(driver)
+actions.move_by_offset(x+650,y+50)
+actions.click()
+actions.click()
+actions.perform()
 time.sleep(5)
 
 #経費申請画面に遷移

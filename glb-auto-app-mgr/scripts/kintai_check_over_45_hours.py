@@ -27,11 +27,15 @@ driver.find_element_by_xpath('//*[@id="password"]').send_keys(user_info.salesfor
 
 #ログインボタンをクリック
 driver.find_element_by_xpath('//*[@id="Login"]').click()
-
+time.sleep(5)
+#driver.find_element_by_xpath("//a[@title='勤務表タブ']").click()
+#勤務表のタブをクリック
+driver.find_element_by_xpath('//*[@id="01r5F000000g5DS_Tab"]/a').click()
 
 for user in user_list.nameList:
-    #勤務表のタブをクリック
-    driver.find_element_by_xpath('//*[@id="01r5F000000g5DS_Tab"]/a').click()
+    
+    
+    
     time.sleep(5)
     driver.find_element_by_xpath('//*[@id="empListButton"]').click()
 

@@ -3,8 +3,8 @@
 slack_token = 'xxxxxxxxxxxxx'#ここにslack tokenを張り付けてください
 
 #salseforceログインID&PW 
-salesforce_id = "xxxxxxxxxxxxx"
-salesforce_passwd = "xxxxxxxxxxxxx"
+salesforce_id = "XXXXX@ap-com.co.jp"
+salesforce_passwd = "XXXXXX"
 
 #勤怠情報
 departure_station = "武蔵中原" #「~"駅"」は含めなくても大丈夫です

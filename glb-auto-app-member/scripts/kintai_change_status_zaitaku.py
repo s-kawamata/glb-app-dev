@@ -7,16 +7,21 @@ from selenium.webdriver.support.ui import Select
 import user_info
 
 
-CHROMEDRIVER = "C:\chromedriver.exe"
+#CHROMEDRIVER = "C:\chromedriver.exe"
 # ドライバー指定でChromeブラウザを開く
-driver = webdriver.Chrome(CHROMEDRIVER)
+#driver = webdriver.Chrome(CHROMEDRIVER)
+
+driver = webdriver.Remote(
+     command_executor="http://selenium:4444/wd/hub",
+     desired_capabilities=DesiredCapabilities.CHROME.copy(),
+ )
 
 #ウインドウサイズを変更
 driver.set_window_size(1920,1080)
- 
+
 # Googleアクセス
 driver.get('https://login.salesforce.com/?locale=jp')
- 
+
 #ログイン画面にてクレデンシャルを入力
 driver.find_element_by_xpath('//*[@id="username"]').send_keys(user_info.salesforce_id)
 driver.find_element_by_xpath('//*[@id="password"]').send_keys(user_info.salesforce_passwd)
@@ -46,14 +51,14 @@ while i < days:
     elements.click()
     time.sleep(5)
 
-    print("日時が選択されました") 
+    print("日時が選択されました")
 
     #「勤務場所」入力欄まで移動
     kinmu_place = driver.find_element_by_xpath('//*[@id="workLocationId"]')
     print (kinmu_place)
     driver.execute_script("window.scrollTo(0, " + str(kinmu_place.location['y']) + ");")
 
-    #「勤務場所」から「在宅勤務」を選択する 
+    #「勤務場所」から「在宅勤務」を選択する
     select = Select(kinmu_place)
     select.select_by_value('a2B5F00000OkMUPUA3')#←文字の方がいい
     #select.select_by_value('')  #←空白

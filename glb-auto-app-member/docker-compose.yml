@@ -1,0 +1,20 @@
+version: '3'
+services:
+  selenium:
+    image: selenium/standalone-chrome
+    container_name: 'selenium'
+    shm_size: "2gb"
+  python3:
+    restart: always
+    build: .
+    container_name: 'py3-container'
+    ports:
+    - '5050:80'
+    working_dir: '/var/app'
+    tty: true
+    volumes:
+      - /var/app
+    depends_on:
+      - selenium
+    privileged: true
+    # command: 'service apache2 start'

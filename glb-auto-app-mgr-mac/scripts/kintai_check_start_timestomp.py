@@ -1,17 +1,27 @@
 from selenium import webdriver
+#import chromedriver_binary
+#from webdriver_manager.chrome import ChromeDriverManager
+import user_info
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 import time
 from selenium.webdriver.support.ui import Select
-#from webdriver_manager.chrome import ChromeDriverManager
-import user_info
+from datetime import datetime, date, timedelta
+from dateutil.relativedelta import relativedelta
 import user_list
+import sys
 from selenium.webdriver import DesiredCapabilities
+#sys.path.append("/Users/akatsukatakukai/Documents/working/kinmu_Bot")
+
+#今日の日付を取得し、要素検索用に加工
+
+today = date.today()
+startTimeElement = "ttvTimeSt" + str(today)
 
 
-# ドライバー指定でChromeブラウザを開く
-# CHROMEDRIVER = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+# CHROMEDRIVER = "C:\chromedriver.exe"
+# # ドライバー指定でChromeブラウザを開く
 # driver = webdriver.Chrome(ChromeDriverManager().install())
 
 driver = webdriver.Remote(
@@ -22,31 +32,49 @@ driver = webdriver.Remote(
 # Googleアクセス
 driver.get('https://login.salesforce.com/?locale=jp')
 
+time.sleep(2)
+
 driver.find_element_by_xpath('//*[@id="username"]').send_keys(user_info.salesforce_id)
 driver.find_element_by_xpath('//*[@id="password"]').send_keys(user_info.salesforce_passwd)
+
+time.sleep(2)
 
 #ログインボタンをクリック
 driver.find_element_by_xpath('//*[@id="Login"]').click()
 
+time.sleep(2)
 
-for user in user_list.nameList:
-    #勤務表のタブをクリック
-    driver.find_element_by_xpath('//*[@id="01r5F000000g5DS_Tab"]/a').click()
-    time.sleep(5)
+#勤務表のタブをクリック
+driver.find_element_by_xpath('//*[@id="01r5F000000g5DS_Tab"]').click()
+
+driver.implicitly_wait(10)
+
+
+#メンバリスト分繰り返し処理を開始
+for i in user_list.nameList:
+
+    #社員名横のプルダウンをクリック
     driver.find_element_by_xpath('//*[@id="empListButton"]').click()
+
+    time.sleep(3)
+
+
 
     #別ウインドウをアクティブに
     newhandles = driver.window_handles
-    driver.switch_to.window(newhandles[1])
+    driver.switch_to.window(newhandles [1])
 
-    time.sleep(5)
+    time.sleep(3)
+
 
     #メンバ名を検索、クリック
-    driver.find_element_by_link_text(user).click()
+    driver.find_element_by_link_text(i).click()
 
-    driver.switch_to.window(newhandles[0])
 
-    time.sleep(5)
+    #元のウインドウに戻る
+    driver.switch_to.window(newhandles [0])
+
+    time.sleep(3)
 
     #お知らせウィンドウが開いていた場合は閉じる
     notification_window = driver.find_elements_by_xpath("//div[@data-dojo-attach-point='titleBar']/*[contains(text(), 'お知らせ')]")
@@ -58,30 +86,18 @@ for user in user_list.nameList:
     else:
         pass
 
-    #時間外超過時間を摘出
-    value = driver.find_element_by_xpath("//*[contains(text(), '当月度の超過時間＋法定休日労働時間')]/../../td[2]").text
-    time.sleep(2)
-    #:より前を切り出す
-    target = ':'
-    idx = value.find(target)
-    exceed_time = int(value[:idx])
+    #勤務開始の要素を確認し、未入力であればフラグを立てる
+    try:
+        status = driver.find_element_by_id(startTimeElement).get_attribute("textContent")
+    except:
+        print('本日は休日です。もし休日出勤の場合は先に勤務申請を修正してください。')
+        break
 
+    if status == '':
+        print(i + 'さんはまだ本日の勤怠開始を打刻していません')
+    else :
+        print(i + 'さんはすでに本日の勤怠開始を打刻しています')
 
-    if exceed_time < 25:
-        print(user + "さんの現在の超過時間:" + str(exceed_time) )
-        print("問題なし")
-
-    elif exceed_time >= 25:
-        print(user + "さんの現在の超過時間:" + str(exceed_time) )
-        print("要注意")
-
-    elif exceed_time >= 35:
-        print(user + "さんの現在の超過時間:" + str(exceed_time) )
-        print("時間外労働時間が45時間を超えそうです。申請の準備をお願いします")
-
-    elif exceed_time >= 45:
-        print(user + "さんの現在の超過時間:" + str(exceed_time) )
-        print("45時間を超えています!")
 
 #完了処理
 print("処理が正常に完了しました。")

@@ -1,10 +1,9 @@
 version: '3'
 services:
   selenium:
-    image: seleniarm/standalone-chromium
+    image: selenium/standalone-chrome
     container_name: 'selenium'
-    volumes:
-      - /dev/shm:/dev/shm
+    shm_size: "2gb"
   python3:
     restart: always
     build: .
@@ -19,5 +18,3 @@ services:
       - selenium
     privileged: true
     # command: 'service apache2 start'
-
-      

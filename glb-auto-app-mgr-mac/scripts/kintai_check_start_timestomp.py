@@ -45,7 +45,7 @@ driver.find_element_by_xpath('//*[@id="Login"]').click()
 time.sleep(2)
 
 #勤務表のタブをクリック
-driver.find_element_by_xpath('//*[@id="01r5F000000g5DS_Tab"]/a').click()
+driver.find_element_by_xpath('//*[@id="01r5F000000g5DS_Tab"]').click()
 
 driver.implicitly_wait(10)
 
@@ -87,8 +87,11 @@ for i in user_list.nameList:
         pass
 
     #勤務開始の要素を確認し、未入力であればフラグを立てる
-
-    status = driver.find_element_by_id(startTimeElement).get_attribute("textContent")
+    try:
+        status = driver.find_element_by_id(startTimeElement).get_attribute("textContent")
+    except:
+        print('本日は休日です。もし休日出勤の場合は先に勤務申請を修正してください。')
+        break
 
     if status == '':
         print(i + 'さんはまだ本日の勤怠開始を打刻していません')

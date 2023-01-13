@@ -13,6 +13,7 @@ RUN pip install --upgrade pip && \
     pip install pipenv && \
     pip install python-dateutil && \
     pip install selenium==4.1.0
+    pip install requests
 
 RUN apt update;apt install -y php
 

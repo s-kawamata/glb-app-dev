@@ -41,13 +41,19 @@ driver.set_window_size(1920,1080)
 # Googleアクセス
 driver.get('https://login.salesforce.com/?locale=jp')
 
-#ログイン画面にてクレデンシャルを入力
-driver.find_element_by_xpath('//*[@id="username"]').send_keys(user_info.salesforce_id)
-driver.find_element_by_xpath('//*[@id="password"]').send_keys(user_info.salesforce_passwd)
-
-#ログインボタンをクリック
-driver.find_element_by_xpath('//*[@id="Login"]').click()
-print ("ログイン完了")
+try:
+  #ログイン画面にてクレデンシャルを入力
+  driver.find_element_by_xpath('//*[@id="username"]').send_keys(user_info.salesforce_id)
+  driver.find_element_by_xpath('//*[@id="password"]').send_keys(user_info.salesforce_passwd)
+  #ログインボタンをクリック
+  driver.find_element_by_xpath('//*[@id="Login"]').click()
+  elm = driver.find_element_by_xpath('//*[@id="phSearchContainer"]/div/div[1]')
+  if elm :
+    pass
+  else :
+    raise ValueError("ログインに失敗しました")
+except NoSuchElementException as e:
+  print(e)
 time.sleep(7)
 
 #iframeを切り替える
@@ -66,19 +72,5 @@ time.sleep(2)
 
 driver.switch_to.default_content()
 
-
-'''
-#退勤ボタンを押下
-elements = driver.find_element_by_xpath('//*[@id="0665F00000117vk"]')
-loc = elements.location
-x, y = loc['x'], loc['y']
-actions = ActionChains(driver)
-actions.move_by_offset(x+715,y+50)
-actions.click()
-actions.click()
-actions.perform()
-time.sleep(5)
-'''
-
-
+#終了
 driver.quit()

@@ -25,13 +25,19 @@ driver.set_window_size(1920,1080)
 # Googleアクセス
 driver.get('https://login.salesforce.com/?locale=jp')
 
-#ログイン画面にてクレデンシャルを入力
-driver.find_element_by_xpath('//*[@id="username"]').send_keys(user_info.salesforce_id)
-driver.find_element_by_xpath('//*[@id="password"]').send_keys(user_info.salesforce_passwd)
-
-#ログインボタンをクリック
-driver.find_element_by_xpath('//*[@id="Login"]').click()
-print ("ログイン完了")
+try:
+  #ログイン画面にてクレデンシャルを入力
+  driver.find_element_by_xpath('//*[@id="username"]').send_keys(user_info.salesforce_id)
+  driver.find_element_by_xpath('//*[@id="password"]').send_keys(user_info.salesforce_passwd)
+  #ログインボタンをクリック
+  driver.find_element_by_xpath('//*[@id="Login"]').click()
+  elm = driver.find_element_by_xpath('//*[@id="phSearchContainer"]/div/div[1]')
+  if elm :
+    pass
+  else :
+    raise ValueError("ログインに失敗しました")
+except NoSuchElementException as e:
+  print(e)
 time.sleep(7)
 
 #勤務表のタブをクリック
@@ -63,7 +69,7 @@ while i < days:
 
     #「勤務場所」から「在宅勤務」を選択する
     select = Select(kinmu_place)
-    select.select_by_value('a2B5F00000OkMUPUA3')#←文字の方がいい
+    select.select_by_value('a2B5F00000OkMUPUA3')
     #select.select_by_value('')  #←空白
 
     #登録ボタンクリック

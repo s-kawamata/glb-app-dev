@@ -42,20 +42,26 @@ driver.set_window_size(1920,1080)
 # Googleアクセス
 driver.get('https://login.salesforce.com/?locale=jp')
 
-#ログイン画面にてクレデンシャルを入力
-driver.find_element_by_xpath('//*[@id="username"]').send_keys(user_info.salesforce_id)
-driver.find_element_by_xpath('//*[@id="password"]').send_keys(user_info.salesforce_passwd)
-
-#ログインボタンをクリック
-driver.find_element_by_xpath('//*[@id="Login"]').click()
-print ("ログイン完了")
+try:
+  #ログイン画面にてクレデンシャルを入力
+  driver.find_element_by_xpath('//*[@id="username"]').send_keys(user_info.salesforce_id)
+  driver.find_element_by_xpath('//*[@id="password"]').send_keys(user_info.salesforce_passwd)
+  #ログインボタンをクリック
+  driver.find_element_by_xpath('//*[@id="Login"]').click()
+  elm = driver.find_element_by_xpath('//*[@id="phSearchContainer"]/div/div[1]')
+  if elm :
+    pass
+  else :
+    raise ValueError("ログインに失敗しました")
+except NoSuchElementException as e:
+  print(e)
 time.sleep(7)
 
 #htmlを表示
 #print(driver.page_source)
 
 #iframeを切り替える
-iframe=driver.find_element_by_xpath("//*[@id='0665F00000117vk']")
+iframe = driver.find_element_by_xpath("//*[@id='0665F00000117vk']")
 driver.switch_to.frame(iframe)
 driver.implicitly_wait(15)
 
@@ -68,7 +74,6 @@ driver.execute_script("window.scrollTo(0, " + str(y_loca.location['y']) + ");")
 y_loca.click()
 time.sleep(2)
 
-
 #出勤ボタンをクリック
 y_loca = driver.find_element_by_xpath("//*[@id='btnStInput']")
 driver.execute_script("window.scrollTo(0, " + str(y_loca.location['y']) + ");")
@@ -76,33 +81,6 @@ y_loca.click()
 time.sleep(2)
 
 driver.switch_to.default_content()
-
-
-
-'''
-#「在宅勤務4h未満」に勤務形態を登録
-print(elements)
-loc = elements.location
-x, y = loc['x'], loc['y']
-actions = ActionChains(driver)
-actions.move_by_offset(x+305,y+65)
-actions.click()
-actions.click()
-actions.perform()
-time.sleep(5)
-actions.reset_actions()
-
-#出勤ボタンを押下
-elements = driver.find_element_by_xpath('//*[@id="0665F00000117vk"]')
-loc = elements.location
-x, y = loc['x'], loc['y']
-actions = ActionChains(driver)
-actions.move_by_offset(x+650,y+50)
-actions.click()
-actions.click()
-actions.perform()
-time.sleep(5)
-'''
 
 #経費申請画面に遷移
 elements = driver.find_element_by_xpath('//*[@id="01r5F000000g5DF_Tab"]/a')
@@ -137,26 +115,63 @@ driver.implicitly_wait(5)
 select.select_by_value('a1M5F00000S8BBiUAN')#交通費を選択
 time.sleep(5)
 
-driver.find_element_by_xpath('//*[@id="DlgExpDetailStFrom"]').send_keys("user_info.departure_station")#出発駅を入力
-driver.find_element_by_xpath('//*[@id="DlgExpDetailStTo"]').send_keys("user_info.destination_station")#到着駅を入力
+driver.find_element_by_xpath('//*[@id="DlgExpDetailStFrom"]').send_keys(user_info.departure_station)#出発駅を入力
+driver.find_element_by_xpath('//*[@id="DlgExpDetailStTo"]').send_keys(user_info.destination_station)#到着駅を入力
 time.sleep(5)
 
 #虫眼鏡をクリック
-driver.find_element_by_xpath('//*[@id="dijit_Dialog_1"]/div[2]/div/div[2]/div[3]/div[2]/div/input[2]').click()
-driver.find_element_by_xpath('//*[@id="expSearchOk"]').click()
-driver.find_element_by_xpath('//*[@id="expSearchOk"]/div').click()
+elements = driver.find_element_by_xpath('/html/body/div[4]/div[2]/div/div[2]/div[3]/div[2]/div/input[2]')
+print(elements)
+loc = elements.location
+x, y = loc['x'], loc['y']
+actions = ActionChains(driver)
+actions.move_by_offset(x,y)
+actions.click()
+actions.click()
+actions.perform()
+time.sleep(5)
+actions.reset_actions()
 time.sleep(5)
 
-#往復ボタンを押下
-driver.find_element_by_xpath('//*[@id="dijit_Dialog_1"]/div[2]/div/div[2]/div[3]/div[2]/div/input[1]').click()
+# 往復ボタンを押下
+elements = driver.find_element_by_xpath('//*[@id="dijit_Dialog_1"]/div[2]/div/div[2]/div[3]/div[2]/div/input[1]')
+print(elements)
+loc = elements.location
+x, y = loc['x'], loc['y']
+actions = ActionChains(driver)
+actions.move_by_offset(x,y)
+actions.click()
+actions.click()
+actions.perform()
 time.sleep(5)
+actions.reset_actions()
 
 #OKを押下
-driver.find_element_by_xpath('//*[@id="dijit_Dialog_1"]/div[2]/div/div[3]/div[2]/button[1]/div').click()
+elements = driver.find_element_by_xpath('//*[@id="dijit_Dialog_1"]/div[2]/div/div[3]/div[2]/button[1]/div')
+print(elements)
+loc = elements.location
+x, y = loc['x'], loc['y']
+actions = ActionChains(driver)
+actions.move_by_offset(x,y)
+actions.click()
+actions.click()
+actions.perform()
+time.sleep(5)
+actions.reset_actions()
 time.sleep(5)
 
 #保存を押下
-driver.find_element_by_xpath('//*[@id="tsfArea"]/div[4]/div[2]/table/tbody/tr/td[8]/button').click()
+elements = driver.find_element_by_xpath('//*[@id="tsfArea"]/div[4]/div[2]/table/tbody/tr/td[8]/button')
+print(elements)
+loc = elements.location
+x, y = loc['x'], loc['y']
+actions = ActionChains(driver)
+actions.move_by_offset(x,y)
+actions.click()
+actions.click()
+actions.perform()
 time.sleep(5)
+actions.reset_actions()
 
+#終了
 driver.quit()

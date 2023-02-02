@@ -41,13 +41,22 @@ driver.set_window_size(1920,1080)
 # Googleアクセス
 driver.get('https://login.salesforce.com/?locale=jp')
 
-#ログイン画面にてクレデンシャルを入力
-driver.find_element_by_xpath('//*[@id="username"]').send_keys(user_info.salesforce_id)
-driver.find_element_by_xpath('//*[@id="password"]').send_keys(user_info.salesforce_passwd)
+#ログイン開始
+try:
+  #ログイン画面にてクレデンシャルを入力
+  driver.find_element_by_xpath('//*[@id="username"]').send_keys(user_info.salesforce_id)
+  driver.find_element_by_xpath('//*[@id="password"]').send_keys(user_info.salesforce_passwd)
+  #ログインボタンをクリック
+  driver.find_element_by_xpath('//*[@id="Login"]').click()
+  elm = driver.find_element_by_xpath('//*[@id="phSearchContainer"]/div/div[1]')
+  if elm :
+    pass 
+  else :
+    raise ValueError("ログインに失敗しました")
+except NoSuchElementException as e:
+  print(e)
 
-#ログインボタンをクリック
-driver.find_element_by_xpath('//*[@id="Login"]').click()
-print ("ログイン完了")
+print("ログイン完了しました")
 time.sleep(7)
 
 
@@ -76,36 +85,6 @@ y_loca.click()
 time.sleep(2)
 
 driver.switch_to.default_content()
-
-
-
-'''
-#「出社」に勤務形態を登録
-elements = driver.find_element_by_xpath('//*[@id="0665F00000117vk"]')
-print(elements)
-loc = elements.location
-x, y = loc['x'], loc['y']
-actions = ActionChains(driver)
-actions.move_by_offset(x+170,y+65)
-actions.click()
-actions.click()
-actions.perform()
-time.sleep(5)
-actions.reset_actions()
-
-#出勤ボタンを押下
-elements = driver.find_element_by_xpath('//*[@id="0665F00000117vk"]')
-loc = elements.location
-x, y = loc['x'], loc['y']
-actions = ActionChains(driver)
-actions.move_by_offset(x+650,y+50)
-actions.click()
-actions.click()
-actions.perform()
-time.sleep(5)
-'''
-
-
 
 #経費申請画面に遷移
 elements = driver.find_element_by_xpath('//*[@id="01r5F000000g5DF_Tab"]/a')
@@ -162,4 +141,6 @@ time.sleep(5)
 driver.find_element_by_xpath('//*[@id="tsfArea"]/div[4]/div[2]/table/tbody/tr/td[8]/button').click()
 time.sleep(5)
 
+#完了処理
+print("処理が正常に完了しました。")
 driver.quit()

@@ -25,13 +25,22 @@ driver.set_window_size(1920,1080)
 # Googleアクセス
 driver.get('https://login.salesforce.com/?locale=jp')
 
-#ログイン画面にてクレデンシャルを入力
-driver.find_element_by_xpath('//*[@id="username"]').send_keys(user_info.salesforce_id)
-driver.find_element_by_xpath('//*[@id="password"]').send_keys(user_info.salesforce_passwd)
+#ログイン開始
+try:
+  #ログイン画面にてクレデンシャルを入力
+  driver.find_element_by_xpath('//*[@id="username"]').send_keys(user_info.salesforce_id)
+  driver.find_element_by_xpath('//*[@id="password"]').send_keys(user_info.salesforce_passwd)
+  #ログインボタンをクリック
+  driver.find_element_by_xpath('//*[@id="Login"]').click()
+  elm = driver.find_element_by_xpath('//*[@id="phSearchContainer"]/div/div[1]')
+  if elm :
+    pass 
+  else :
+    raise ValueError("ログインに失敗しました")
+except NoSuchElementException as e:
+  print(e)
 
-#ログインボタンをクリック
-driver.find_element_by_xpath('//*[@id="Login"]').click()
-print ("ログイン完了")
+print("ログイン完了しました")
 time.sleep(7)
 
 #勤務表のタブをクリック
@@ -75,4 +84,6 @@ while i < days:
 
 else:
 # 処理対象が存在しない時の処理
+#完了処理
+    print("処理が正常に完了しました。")
     driver.quit()

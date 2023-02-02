@@ -22,12 +22,23 @@ driver = webdriver.Remote(
 # Googleアクセス
 driver.get('https://login.salesforce.com/?locale=jp')
 
-driver.find_element_by_xpath('//*[@id="username"]').send_keys(user_info.salesforce_id)
-driver.find_element_by_xpath('//*[@id="password"]').send_keys(user_info.salesforce_passwd)
+#ログイン開始
+try:
+  #ログイン画面にてクレデンシャルを入力
+  driver.find_element_by_xpath('//*[@id="username"]').send_keys(user_info.salesforce_id)
+  driver.find_element_by_xpath('//*[@id="password"]').send_keys(user_info.salesforce_passwd)
+  #ログインボタンをクリック
+  driver.find_element_by_xpath('//*[@id="Login"]').click()
+  elm = driver.find_element_by_xpath('//*[@id="phSearchContainer"]/div/div[1]')
+  if elm :
+    pass 
+  else :
+    raise ValueError("ログインに失敗しました")
+except NoSuchElementException as e:
+  print(e)
 
-#ログインボタンをクリック
-driver.find_element_by_xpath('//*[@id="Login"]').click()
-time.sleep(5)
+print("ログイン完了しました")
+time.sleep(7)
 
 #勤務表のタブをクリック
 driver.find_element_by_xpath('//*[@id="01r5F000000g5DS_Tab"]/a').click()

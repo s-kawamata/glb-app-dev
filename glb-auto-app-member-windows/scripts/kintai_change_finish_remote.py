@@ -8,6 +8,7 @@ from selenium.webdriver.support.ui import Select
 import datetime
 import requests
 from selenium.webdriver import DesiredCapabilities
+from selenium.common.exceptions import NoSuchElementException
 
 
 TOKEN = user_info.slack_token
@@ -54,6 +55,7 @@ try:
     pass 
   else :
     raise ValueError("ログインに失敗しました")
+    driver.quit()
 except NoSuchElementException as e:
   print(e)
 

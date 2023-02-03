@@ -8,6 +8,7 @@ from selenium.webdriver.support.ui import Select
 import datetime
 import requests
 from selenium.webdriver import DesiredCapabilities
+from selenium.common.exceptions import NoSuchElementException
 
 
 #CHROMEDRIVER = "C:\chromedriver.exe"

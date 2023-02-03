@@ -12,6 +12,7 @@ from dateutil.relativedelta import relativedelta
 import user_list
 import sys
 from selenium.webdriver import DesiredCapabilities
+from selenium.common.exceptions import NoSuchElementException
 #sys.path.append("/Users/akatsukatakukai/Documents/working/kinmu_Bot")
 
 #起動させた一ヶ月前の年月を取得

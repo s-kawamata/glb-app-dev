@@ -8,6 +8,7 @@ from selenium.webdriver.support.ui import Select
 import datetime
 import requests
 from selenium.webdriver import DesiredCapabilities
+from selenium.common.exceptions import NoSuchElementException
 
 TOKEN = user_info.slack_token
 CHANNEL = 'akatsuka_test'

@@ -8,6 +8,7 @@ from selenium.webdriver.support.ui import Select
 import user_info
 import user_list
 from selenium.webdriver import DesiredCapabilities
+from selenium.common.exceptions import NoSuchElementException
 
 
 # ドライバー指定でChromeブラウザを開く

@@ -40,7 +40,20 @@ try:
   driver.find_element_by_xpath('//*[@id="password"]').send_keys(user_info.salesforce_passwd)
   #ログインボタンをクリック
   driver.find_element_by_xpath('//*[@id="Login"]').click()
-  elm = driver.find_element_by_xpath('//*[@id="phSearchContainer"]/div/div[1]')
+  time.sleep(5)
+
+  #お知らせウィンドウが開いていた場合は閉じる
+  notification_window = driver.find_elements_by_xpath("//div[@data-dojo-attach-point='titleBar']/*[contains(text(), 'お知らせ')]")
+  
+  if notification_window:
+    y_loca = driver.find_element_by_xpath("//tr[@id='dialogInfoBottom']//button[@class='std-button2 close_button']")
+    driver.execute_script("window.scrollTo(0, " + str(y_loca.location['y']) + ");")
+    y_loca.click()
+  else:
+    pass
+    
+  time.sleep(5)
+  elm = driver.find_elements_by_xpath('//*[@id="phSearchContainer"]/div/div[1]')
   if elm :
     pass 
   else :

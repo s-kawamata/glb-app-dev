@@ -1,6 +1,6 @@
 from selenium import webdriver
 #import chromedriver_binary
-#from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.chrome import ChromeDriverManager
 import user_info
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -13,6 +13,8 @@ import user_list
 import sys
 from selenium.webdriver import DesiredCapabilities
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions
 #sys.path.append("/Users/akatsukatakukai/Documents/working/kinmu_Bot")
 
 #起動させた一ヶ月前の年月を取得
@@ -22,13 +24,14 @@ last_month = now - relativedelta(months=1)
 last_month_str = last_month.strftime('%Y年%m月')
 
 
-#CHROMEDRIVER = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+CHROMEDRIVER = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 #ドライバー指定でChromeブラウザを開く
-#driver = webdriver.Chrome(ChromeDriverManager().install())
-driver = webdriver.Remote(
-     command_executor="http://selenium:4444/wd/hub",
-     desired_capabilities=DesiredCapabilities.CHROME.copy(),
- )
+driver = webdriver.Chrome(ChromeDriverManager().install())
+
+# driver = webdriver.Remote(
+#      command_executor="http://selenium:4444/wd/hub",
+#      desired_capabilities=DesiredCapabilities.CHROME.copy(),
+#  )
 
 # Googleアクセス
 driver.get('https://login.salesforce.com/?locale=jp')
@@ -41,6 +44,14 @@ try:
   #ログインボタンをクリック
   driver.find_element_by_xpath('//*[@id="Login"]').click()
   time.sleep(5)
+
+  #2段階認証を求められた場合は2分の認証時間を設ける
+  auth_check = driver.find_elements_by_xpath("//*[contains(text(), 'モバイルデバイスを確認')]")
+  if auth_check:
+    wait = WebDriverWait(driver, 120)
+    wait.until(expected_conditions.invisibility_of_element_located((By.ID, "header")))
+  else:
+    pass
   
   #お知らせウィンドウが開いていた場合は閉じる
   notification_window = driver.find_elements_by_xpath("//div[@data-dojo-attach-point='titleBar']/*[contains(text(), 'お知らせ')]")
@@ -68,8 +79,6 @@ time.sleep(7)
 driver.find_element_by_xpath('//*[@id="01r5F000000g5DS_Tab"]/a').click()
 
 driver.implicitly_wait(10)
-
-
 
 #メンバリスト分繰り返し処理を開始
 for i in user_list.nameList:

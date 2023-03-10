@@ -1,4 +1,4 @@
 
 #salseforceログインID&PW 
-salesforce_id = "ここにユーザー名を記入してください"
-salesforce_passwd = "ここにパスワードを記入してください"
+salesforce_id = "s_kawamata@ap-com.co.jp"
+salesforce_passwd = "19921107Wanko"

@@ -13,6 +13,8 @@ import user_list
 import sys
 from selenium.webdriver import DesiredCapabilities
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions
 #sys.path.append("/Users/akatsukatakukai/Documents/working/kinmu_Bot")
 
 #今日の日付を取得し、要素検索用に加工

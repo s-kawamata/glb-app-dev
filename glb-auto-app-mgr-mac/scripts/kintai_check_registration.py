@@ -1,6 +1,6 @@
 from selenium import webdriver
 #import chromedriver_binary
-from webdriver_manager.chrome import ChromeDriverManager
+#from webdriver_manager.chrome import ChromeDriverManager
 import user_info
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -24,14 +24,14 @@ last_month = now - relativedelta(months=1)
 last_month_str = last_month.strftime('%Y年%m月')
 
 
-CHROMEDRIVER = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-#ドライバー指定でChromeブラウザを開く
-driver = webdriver.Chrome(ChromeDriverManager().install())
+# CHROMEDRIVER = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+# #ドライバー指定でChromeブラウザを開く
+# driver = webdriver.Chrome(ChromeDriverManager().install())
 
-# driver = webdriver.Remote(
-#      command_executor="http://selenium:4444/wd/hub",
-#      desired_capabilities=DesiredCapabilities.CHROME.copy(),
-#  )
+driver = webdriver.Remote(
+     command_executor="http://selenium:4444/wd/hub",
+     desired_capabilities=DesiredCapabilities.CHROME.copy(),
+ )
 
 # Googleアクセス
 driver.get('https://login.salesforce.com/?locale=jp')

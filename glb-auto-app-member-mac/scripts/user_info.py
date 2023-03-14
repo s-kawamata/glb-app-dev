@@ -1,12 +1,12 @@
 
 #slack token
-slack_token = 'ここにslack tokenを張り付けてください'
+slack_token = 'xoxp-296963997159-772505970625-4730292810550-6b53262b420935fe085c0fa90b243a1c'
 
 #salseforceログインID&PW 
-salesforce_id = "ここにユーザー名を記入してください"
-salesforce_passwd = "ここにパスワードを記入してください"
+salesforce_id = "s_kawamata@ap-com.co.jp"
+salesforce_passwd = "19921107Wanko"
 
 #勤怠情報
-departure_station = "ここに出発駅を記入してください" #「~"駅"」は含めなくても大丈夫です
-destination_station = "ここに到着駅を記入してください" #「~"駅"」は含めなくても大丈夫です
-#syusya_time = "xx:xx" #出社時刻を入力してください
+departure_station = "北小金" #「~"駅"」は含めなくても大丈夫です
+destination_station = "神田" #「~"駅"」は含めなくても大丈夫です
+syusya_time = "09:30" #出社時刻を入力してください

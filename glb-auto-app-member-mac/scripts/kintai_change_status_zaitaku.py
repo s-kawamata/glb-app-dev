@@ -9,11 +9,13 @@ import datetime
 import requests
 from selenium.webdriver import DesiredCapabilities
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions
 
 
-#CHROMEDRIVER = "C:\chromedriver.exe"
-# ドライバー指定でChromeブラウザを開く
-#driver = webdriver.Chrome(CHROMEDRIVER)
+# CHROMEDRIVER = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+# #ドライバー指定でChromeブラウザを開く
+# driver = webdriver.Chrome(CHROMEDRIVER)
 
 driver = webdriver.Remote(
      command_executor="http://selenium:4444/wd/hub",
@@ -33,6 +35,27 @@ try:
   driver.find_element_by_xpath('//*[@id="password"]').send_keys(user_info.salesforce_passwd)
   #ログインボタンをクリック
   driver.find_element_by_xpath('//*[@id="Login"]').click()
+  time.sleep(5)
+
+  #2段階認証を求められた場合は2分の認証時間を設ける
+  auth_check = driver.find_elements_by_xpath("//*[contains(text(), 'モバイルデバイスを確認')]")
+  if auth_check:
+    wait = WebDriverWait(driver, 120)
+    wait.until(expected_conditions.invisibility_of_element_located((By.ID, "header")))
+  else:
+    pass
+  
+  #お知らせウィンドウが開いていた場合は閉じる
+  notification_window = driver.find_elements_by_xpath("//div[@data-dojo-attach-point='titleBar']/*[contains(text(), 'お知らせ')]")
+  
+  if notification_window:
+    y_loca = driver.find_element_by_xpath("//tr[@id='dialogInfoBottom']//button[@class='std-button2 close_button']")
+    driver.execute_script("window.scrollTo(0, " + str(y_loca.location['y']) + ");")
+    y_loca.click()
+  else:
+    pass
+    
+  time.sleep(5)
   elm = driver.find_element_by_xpath('//*[@id="phSearchContainer"]/div/div[1]')
   if elm :
     pass 

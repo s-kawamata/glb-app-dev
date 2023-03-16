@@ -1,36 +1,40 @@
-import user_info
+import datetime
+import time
+
+#import chromedriver_binary
+import requests
 from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver import DesiredCapabilities
+from selenium.webdriver.chrome import service
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.action_chains import ActionChains
-import time
-from selenium.webdriver.support.ui import Select
-import datetime
-import requests
-from selenium.webdriver import DesiredCapabilities
-from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support.ui import Select, WebDriverWait
 
+import user_info
 
-TOKEN = user_info.slack_token
-CHANNEL = 'akatsuka_test'
+# TOKEN = user_info.slack_token
+# CHANNEL = 'akatsuka_test'
 
-url = "https://slack.com/api/chat.postMessage"
-headers = {"Authorization": "Bearer "+TOKEN}
-data  = {
-  'channel': CHANNEL,
-  'text': 'リモワ完了します'
-}
+# url = "https://slack.com/api/chat.postMessage"
+# headers = {"Authorization": "Bearer "+TOKEN}
+# data  = {
+#   'channel': CHANNEL,
+#   'text': 'リモワ開始します'
+# }
 
-r = requests.post(url, headers=headers, data=data)
+# r = requests.post(url, headers=headers, data=data)
 
-if "\'ok\': True" in str(r.json()):
-  print("SlackへのPOST成功")
-else:
-  print("SlackへのPOST失敗")
+# if "\'ok\': True" in str(r.json()):
+#   print("SlackへのPOST成功")
+# else:
+#   print("SlackへのPOST失敗")
 
-#CHROMEDRIVER = "C:\chromedriver.exe"
-# ドライバー指定でChromeブラウザを開く
-#driver = webdriver.Chrome(CHROMEDRIVER)
+# #ドライバー指定でChromeブラウザを開く
+# CHROMEDRIVER = "C:\chromedriver.exe"
+# driver = webdriver.Chrome(CHROMEDRIVER)
 
 driver = webdriver.Remote(
      command_executor="http://selenium:4444/wd/hub",
@@ -50,27 +54,29 @@ try:
   driver.find_element_by_xpath('//*[@id="password"]').send_keys(user_info.salesforce_passwd)
   #ログインボタンをクリック
   driver.find_element_by_xpath('//*[@id="Login"]').click()
+  time.sleep(5)
+
+  #指定したdriverに対して最大で10秒間待つように設定する
+  wait = WebDriverWait(driver, 120)
+  wait.until(expected_conditions.invisibility_of_element_located((By.ID, "//*[contains(text(), 'モバイルデバイスを確認')]")))
+  time.sleep(5)
+  #指定された要素が非表示になるまで待機する(要素は約5秒後に非表示になる)
   elm = driver.find_element_by_xpath('//*[@id="phSearchContainer"]/div/div[1]')
   if elm :
     pass 
   else :
     raise ValueError("ログインに失敗しました")
-    driver.quit()
 except NoSuchElementException as e:
   print(e)
 
 print("ログイン完了しました")
-time.sleep(7)
+time.sleep(10)
 
 print("処理開始します。")
-
 #iframeを切り替える
 iframe=driver.find_element_by_xpath("//*[@id='0665F00000117vk']")
 driver.switch_to.frame(iframe)
 driver.implicitly_wait(15)
-
-#htmlを表示2
-#print("ここからiframe切り替えてます。" + driver.page_source)
 
 #退勤ボタンをクリック
 y_loca = driver.find_element_by_xpath("//*[@id='btnEtInput']")

@@ -1,28 +1,31 @@
+import datetime
+import sys
+import time
+from datetime import date, datetime, timedelta
+
+import requests
+from dateutil.relativedelta import relativedelta
 from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver import DesiredCapabilities
+from selenium.webdriver.chrome import service
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support.ui import Select, WebDriverWait
+
 #import chromedriver_binary
 #from webdriver_manager.chrome import ChromeDriverManager
 import user_info
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.action_chains import ActionChains
-import time
-from selenium.webdriver.support.ui import Select
-from datetime import datetime, date, timedelta
-from dateutil.relativedelta import relativedelta
 import user_list
-import sys
-from selenium.webdriver import DesiredCapabilities
-from selenium.common.exceptions import NoSuchElementException
-#sys.path.append("/Users/akatsukatakukai/Documents/working/kinmu_Bot")
 
 #今日の日付を取得し、要素検索用に加工
-
 today = date.today()
 startTimeElement = "ttvTimeSt" + str(today)
 
-
-# CHROMEDRIVER = "C:\chromedriver.exe"
 # # ドライバー指定でChromeブラウザを開く
+# CHROMEDRIVER = "C:\chromedriver.exe"
 # driver = webdriver.Chrome(ChromeDriverManager().install())
 
 driver = webdriver.Remote(
@@ -40,6 +43,13 @@ try:
   driver.find_element_by_xpath('//*[@id="password"]').send_keys(user_info.salesforce_passwd)
   #ログインボタンをクリック
   driver.find_element_by_xpath('//*[@id="Login"]').click()
+  time.sleep(5)
+
+  #指定したdriverに対して最大で10秒間待つように設定する
+  wait = WebDriverWait(driver, 120)
+  wait.until(expected_conditions.invisibility_of_element_located((By.ID, "//*[contains(text(), 'モバイルデバイスを確認')]")))
+  time.sleep(5)
+  #指定された要素が非表示になるまで待機する(要素は約5秒後に非表示になる)
   elm = driver.find_element_by_xpath('//*[@id="phSearchContainer"]/div/div[1]')
   if elm :
     pass 
@@ -53,13 +63,23 @@ time.sleep(7)
 
 #勤務表のタブをクリック
 driver.find_element_by_xpath('//*[@id="01r5F000000g5DS_Tab"]/a').click()
+time.sleep(5)
 
-driver.implicitly_wait(10)
+#お知らせウィンドウが開いていた場合は閉じる
+notification_window = driver.find_elements_by_xpath("//div[@data-dojo-attach-point='titleBar']/*[contains(text(), 'お知らせ')]")
 
+if notification_window:
+  y_loca = driver.find_element_by_xpath("//tr[@id='dialogInfoBottom']//button[@class='std-button2 close_button']")
+  driver.execute_script("window.scrollTo(0, " + str(y_loca.location['y']) + ");")
+  y_loca.click()
+else:
+  pass
+time.sleep(5)
 
 #メンバリスト分繰り返し処理を開始
 for i in user_list.nameList:
-
+    driver.implicitly_wait(20)
+    #time.sleep(10)
     #社員名横のプルダウンをクリック
     driver.find_element_by_xpath('//*[@id="empListButton"]').click()
 

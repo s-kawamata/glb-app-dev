@@ -41,7 +41,7 @@ try:
   driver.find_element_by_xpath('//*[@id="Login"]').click()
   time.sleep(5)
 
-  #指定したdriverに対して最大で10秒間待つように設定する
+  #指定したdriverに対して最大で120秒間待つように設定する
   wait = WebDriverWait(driver, 120)
   wait.until(expected_conditions.invisibility_of_element_located((By.ID, "//*[contains(text(), 'モバイルデバイスを確認')]")))
   time.sleep(5)

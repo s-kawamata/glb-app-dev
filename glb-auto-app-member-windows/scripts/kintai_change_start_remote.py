@@ -17,22 +17,22 @@ import user_info
 
 print("処理開始します。")
 
-# TOKEN = user_info.slack_token
-# CHANNEL = 'akatsuka_test'
+TOKEN = user_info.slack_token
+CHANNEL = 'glb_kintai'
 
-# url = "https://slack.com/api/chat.postMessage"
-# headers = {"Authorization": "Bearer "+TOKEN}
-# data  = {
-#   'channel': CHANNEL,
-#   'text': 'リモワ開始します'
-# }
+url = "https://slack.com/api/chat.postMessage"
+headers = {"Authorization": "Bearer "+TOKEN}
+data  = {
+  'channel': CHANNEL,
+  'text': 'リモワ開始します'
+}
 
-# r = requests.post(url, headers=headers, data=data)
+r = requests.post(url, headers=headers, data=data)
 
-# if "\'ok\': True" in str(r.json()):
-#   print("SlackへのPOST成功")
-# else:
-#   print("SlackへのPOST失敗")
+if "\'ok\': True" in str(r.json()):
+  print("SlackへのPOST成功")
+else:
+  print("SlackへのPOST失敗")
 
 # #ドライバー指定でChromeブラウザを開く
 # CHROMEDRIVER = "C:\chromedriver.exe"
@@ -59,7 +59,7 @@ try:
   driver.find_element_by_xpath('//*[@id="Login"]').click()
   time.sleep(5)
 
-  #指定したdriverに対して最大で10秒間待つように設定する
+  #指定したdriverに対して最大で120秒間待つように設定する
   wait = WebDriverWait(driver, 120)
   wait.until(expected_conditions.invisibility_of_element_located((By.ID, "//*[contains(text(), 'モバイルデバイスを確認')]")))
   time.sleep(5)

@@ -1,7 +1,6 @@
 
 #slack token
-slack_token = 'xoxp-296963997159-1226278144609-4760576575920-56e4aed8493536b4629c6601815b4887'#akatsuka_testのトークン
-
+slack_token = 'ここにslack tokenを張り付けてください'
 #salseforceログインID&PW 
 salesforce_id = "ここにユーザIDを入力してください"
 salesforce_passwd = "ここにパスワードを入力してください"

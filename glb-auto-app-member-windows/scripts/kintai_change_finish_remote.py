@@ -22,7 +22,7 @@ url = "https://slack.com/api/chat.postMessage"
 headers = {"Authorization": "Bearer "+TOKEN}
 data  = {
   'channel': CHANNEL,
-  'text': 'リモワ開始します'
+  'text': 'リモワ完了します'
 }
 
 r = requests.post(url, headers=headers, data=data)

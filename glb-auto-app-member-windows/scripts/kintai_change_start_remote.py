@@ -18,7 +18,7 @@ import user_info
 print("処理開始します。")
 
 TOKEN = user_info.slack_token
-CHANNEL = 'glb_kintai'
+CHANNEL = 'akatsuka_test'
 
 url = "https://slack.com/api/chat.postMessage"
 headers = {"Authorization": "Bearer "+TOKEN}

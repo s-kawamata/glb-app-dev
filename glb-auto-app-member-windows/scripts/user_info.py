@@ -1,5 +1,5 @@
 #slack token
-slack_token = 'xoxp-296963997159-1226278144609-5324206951584-29777481fb27ef27d2381743b3392465'
+slack_token = 'ここにtokenを記入してください'
 
 #salseforceログインID&PW 
 salesforce_id = "ここにユーザIDを入力してください"

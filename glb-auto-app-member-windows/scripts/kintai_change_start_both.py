@@ -16,7 +16,7 @@ from selenium.webdriver.support.ui import Select, WebDriverWait
 import user_info
 
 TOKEN = user_info.slack_token
-CHANNEL = 'glb_kintai'
+CHANNEL = 'akatsuka_test'
 
 url = "https://slack.com/api/chat.postMessage"
 headers = {"Authorization": "Bearer "+TOKEN}
